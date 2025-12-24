@@ -1,6 +1,7 @@
 package com.library;
 
 import com.library.model.Book;
+import com.library.model.User;
 import com.library.repository.InMemoryBookRepository;
 import com.library.service.LibraryService;
 
@@ -20,6 +21,8 @@ public class Main {
         System.out.println("Welcome to the Library System!");
 
         while (true) {
+            User currentUser = new User("U001", "John Doe");
+            System.out.println("Logged in as: " + currentUser.getName());
             System.out.println("\nSelect an option:");
             System.out.println("1. Add a Book");
             System.out.println("2. Borrow a Book");
@@ -48,7 +51,7 @@ public class Main {
                     case "2": {
                         System.out.println("Enter Book ID to borrow: ");
                         String borrowId = scanner.nextLine();
-                        service.borrowBook(borrowId);
+                        service.borrowBook(borrowId, currentUser);
 
                         System.out.println("Booked borrowed successfully");
                         break;

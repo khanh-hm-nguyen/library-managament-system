@@ -1,6 +1,7 @@
 package com.library.service;
 
 import com.library.model.Book;
+import com.library.model.User;
 import com.library.repository.BookRepository;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class LibraryService {
         return bookRepository.findAll();
     }
 
-    public void borrowBook(String id) {
+    public void borrowBook(String id, User user) {
         Book book = bookRepository.findById(id);
 
         if (book == null) {
@@ -34,10 +35,15 @@ public class LibraryService {
         }
 
         if (book.isBorrowed()) {
-            throw new IllegalArgumentException("Book is not available");
+            throw new IllegalStateException("Book is not available");
+        }
+
+        if (!user.canBorrow()) {
+            throw new IllegalStateException("User " + user.getName() + " has reached the limit of 3 books.");
         }
 
         book.setBorrowed(true);
+        user.addBook(book);
         bookRepository.save(book);
         System.out.println("Success! you borrowed: " + book.getTitle());
     }
