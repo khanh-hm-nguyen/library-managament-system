@@ -3,6 +3,7 @@ package com.library.service;
 import com.library.model.Book;
 import com.library.repository.BookRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryService {
@@ -53,4 +54,22 @@ public class LibraryService {
         bookRepository.save(book);
         System.out.println("Success! you returned: " + book.getTitle());
     }
+
+    public List<Book> searchBooks (String query) {
+        List<Book> results = new ArrayList<>();
+
+        List<Book> allBooks = bookRepository.findAll();
+
+        for (Book book : allBooks) {
+            if (book.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                book.getAuthor().toLowerCase().contains(query.toLowerCase()) ) {
+                results.add(book);
+            }
+        }
+
+        return results;
+
+    }
+
+
 }
