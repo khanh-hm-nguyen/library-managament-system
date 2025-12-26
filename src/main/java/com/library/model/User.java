@@ -1,5 +1,6 @@
 package com.library.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -7,12 +8,13 @@ public class User {
     private String id;
     private String name;
 
-    private List<Book> borrowedBooks;
+    private List<LibraryItem> borrowedItems;
 
     public User(String id, String name) {
         this.id = id;
         this.name = name;
-        this.borrowedBooks = borrowedBooks;
+        // Initialize the list here to avoid NullPointerException
+        this.borrowedItems = new ArrayList<>();
     }
 
     public String getId() {
@@ -31,24 +33,26 @@ public class User {
         this.name = name;
     }
 
-    public List<Book> getBorrowedBooks() {
-        return borrowedBooks;
+    // Updated Getters/Setters to handle LibraryItem
+    public List<LibraryItem> getBorrowedItems() {
+        return borrowedItems;
     }
 
-    public void setBorrowedBooks(List<Book> borrowedBooks) {
-        this.borrowedBooks = borrowedBooks;
+    public void setBorrowedItems(List<LibraryItem> borrowedItems) {
+        this.borrowedItems = borrowedItems;
     }
 
     public boolean canBorrow() {
-        return borrowedBooks.size() < 3;
+            // checking the list size
+        return borrowedItems.size() < 3;
     }
 
-    public void addBook (Book book) {
-        borrowedBooks.add(book);
+    public void addItem(LibraryItem item) {
+        borrowedItems.add(item);
     }
 
-    public void removeBook(Book book) {
-        borrowedBooks.remove(book);
+    public void removeItem(LibraryItem item) {
+        borrowedItems.remove(item);
     }
 
     @Override
@@ -56,7 +60,7 @@ public class User {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", borrowedBooks=" + borrowedBooks +
+                ", borrowedItems=" + borrowedItems +
                 '}';
     }
 }

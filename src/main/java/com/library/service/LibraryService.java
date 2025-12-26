@@ -1,81 +1,86 @@
 package com.library.service;
 
 import com.library.model.Book;
+import com.library.model.DVD;
+import com.library.model.LibraryItem;
 import com.library.model.User;
-import com.library.repository.BookRepository;
+import com.library.repository.ItemRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryService {
-    private final BookRepository bookRepository;
+    private final ItemRepository itemRepository;
 
-    public LibraryService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public LibraryService(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
     }
 
-    public void addBook(String id, String title, String author) {
-        if (id == null || id.isEmpty()) {
-            throw new IllegalArgumentException("Book ID cannot be empty");
-        }
-
-        Book newBook = new Book(id, title, author);
-        bookRepository.save(newBook);
+    // Generic method to add ANY item
+    public void addItem(LibraryItem item) {
+        itemRepository.save(item);
     }
 
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+
+    public void borrowItem(String id, User user) {
+        LibraryItem item = itemRepository.findById(id);
+
+        if (item == null) {
+            throw new IllegalArgumentException("Item not found");
+        }
+
+        if (item.isBorrowed()) {
+            throw new IllegalStateException("Item is not available");
+        }
+
+
+        item.setBorrowed(true);
+
+        itemRepository.save(item);
+
+        System.out.println("Success! You borrowed: " + item.getTitle());
     }
 
-    public void borrowBook(String id, User user) {
-        Book book = bookRepository.findById(id);
-
-        if (book == null) {
-            throw new IllegalArgumentException("Book not found");
-        }
-
-        if (book.isBorrowed()) {
-            throw new IllegalStateException("Book is not available");
-        }
-
-        if (!user.canBorrow()) {
-            throw new IllegalStateException("User " + user.getName() + " has reached the limit of 3 books.");
-        }
-
-        book.setBorrowed(true);
-        user.addBook(book);
-        bookRepository.save(book);
-        System.out.println("Success! you borrowed: " + book.getTitle());
+    public List<LibraryItem> getAllItems() {
+        return itemRepository.findAll();
     }
 
-    public void returnBook (String id) {
-        Book book = bookRepository.findById(id);
+    public List<LibraryItem> searchItems(String query) {
+        List<LibraryItem> results = new ArrayList<>();
 
-        if (book == null) {
-            throw new IllegalArgumentException("Book not found");
-        }
+        // Convert query to lowercase once to save processing
+        String lowerCaseQuery = query.toLowerCase();
 
-        book.setBorrowed(false);
+        List<LibraryItem> allItems = itemRepository.findAll();
 
-        bookRepository.save(book);
-        System.out.println("Success! you returned: " + book.getTitle());
-    }
+        for (LibraryItem item : allItems) {
+            boolean matches = false;
 
-    public List<Book> searchBooks (String query) {
-        List<Book> results = new ArrayList<>();
+            // 1. Check the Title (Shared by all items)
+            if (item.getTitle().toLowerCase().contains(lowerCaseQuery)) {
+                matches = true;
+            }
 
-        List<Book> allBooks = bookRepository.findAll();
+            // 2. If it's a BOOK, check the Author
+            else if (item instanceof Book book) {
+                if (book.getAuthor().toLowerCase().contains(lowerCaseQuery)) {
+                    matches = true;
+                }
+            }
 
-        for (Book book : allBooks) {
-            if (book.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                book.getAuthor().toLowerCase().contains(query.toLowerCase()) ) {
-                results.add(book);
+            // 3. If it's a DVD, check the Director
+            else if (item instanceof DVD dvd) {
+                if (dvd.getDirector().toLowerCase().contains(lowerCaseQuery)) {
+                    matches = true;
+                }
+            }
+
+            // If any condition matched, add to results
+            if (matches) {
+                results.add(item);
             }
         }
 
         return results;
-
     }
-
-
 }

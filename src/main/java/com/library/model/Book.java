@@ -1,34 +1,12 @@
 package com.library.model;
 
-public class Book {
+public class Book extends LibraryItem {
 
-    private String id;
-    private String title;
-    private String author;
-    private boolean isBorrowed;
+   private String author;
 
-    // constructor
-    public Book(String id, String title, String author) {
-        this.id = id;
-        this.title = title;
+    public Book(String id, String title, String author,String location) {
+        super(id, title, location);
         this.author = author;
-        this.isBorrowed = isBorrowed;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getAuthor() {
@@ -39,21 +17,10 @@ public class Book {
         this.author = author;
     }
 
-    public boolean isBorrowed() {
-        return isBorrowed;
-    }
-
-    public void setBorrowed(boolean status) {
-        this.isBorrowed = status;
-    }
-
     @Override
     public String toString() {
         return "Book{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", isBorrowed=" + isBorrowed +
+                "author='" + author + '\'' +
                 '}';
     }
 }

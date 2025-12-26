@@ -1,14 +1,16 @@
 package com.library.model;
 
 public class LibraryItem {
-    protected String id;
-    protected String title;
-    protected String location;
+    private String id;
+    private String title;
+    private String location;
+    private boolean isBorrowed;
 
     public LibraryItem(String id, String title, String location) {
         this.id = id;
         this.title = title;
         this.location = location;
+        this.isBorrowed = false;
     }
 
     public String getId() {
@@ -35,12 +37,21 @@ public class LibraryItem {
         this.location = location;
     }
 
+    public boolean isBorrowed() {
+        return isBorrowed;
+    }
+
+    public void setBorrowed(boolean borrowed) {
+        isBorrowed = borrowed;
+    }
+
     @Override
     public String toString() {
         return "LibraryItem{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", location='" + location + '\'' +
+                ", isBorrowed=" + isBorrowed +
                 '}';
     }
 }
