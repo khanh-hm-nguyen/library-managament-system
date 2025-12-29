@@ -1,0 +1,6 @@
+BOOK,B001,Clean Code,Shelf A,false,Robert Martin
+BOOK,B002,Harry Potter,Shelf B,true,J.K. Rowling
+BOOK,B003,The Hobbit,Shelf A,false,J.R.R. Tolkien
+DVD,D001,The Matrix,Shelf C,false,The Wachowskis,136
+DVD,D002,Inception,Shelf C,true,Christopher Nolan,148
+BOOK,B004,Head First Java,Shelf B,false,Kathy Sierra

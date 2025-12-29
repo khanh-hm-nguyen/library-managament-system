@@ -14,9 +14,10 @@ public class ConsoleUI {
     public void showMainMenu() {
         System.out.println("\n=== LIBRARY SYSTEM ===");
         System.out.println("1. List All Items");
-        System.out.println("2. Borrow Item");
-        System.out.println("3. Return Item");
-        System.out.println("4. Exit");
+        System.out.println("2. Search Item");
+        System.out.println("3. Borrow Item");
+        System.out.println("4. Return Item");
+        System.out.println("5. Exit");
         System.out.print("Enter choice: ");
     }
 
