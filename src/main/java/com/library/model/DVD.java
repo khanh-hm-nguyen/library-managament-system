@@ -28,7 +28,7 @@ public class DVD extends LibraryItem {
 
     @Override
     public String toString() {
-        return "DVD{" +
+        return super.toString() + " DVD{" +
                 "director='" + director + '\'' +
                 ", duration=" + duration +
                 '}';
