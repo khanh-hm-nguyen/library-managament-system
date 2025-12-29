@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class InMemoryItemRepository implements ItemRepository {
 
-
     private Map<String, LibraryItem> itemDb = new HashMap<>();
 
     @Override
