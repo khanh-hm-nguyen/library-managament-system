@@ -4,6 +4,8 @@ import com.library.model.LibraryItem;
 import com.library.model.User;
 import com.library.repository.ItemRepository;
 
+import java.util.List;
+
 public class LibraryService {
 
     // The service needs the repository to talk to the database
@@ -54,9 +56,6 @@ public class LibraryService {
             return;
         }
 
-        // You might want to check if THIS specific user actually has the book,
-        // but for now, we will keep it simple.
-
         item.setBorrowed(false); // Mark as available
         user.removeItem(item);   // Remove from user's list
 
@@ -64,4 +63,6 @@ public class LibraryService {
 
         System.out.println("Success: Returned '" + item.getTitle() + "'");
     }
+
+    public List<LibraryItem> getAllItems() { return itemRepository.findAll(); }
 }
