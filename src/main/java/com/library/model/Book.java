@@ -19,7 +19,8 @@ public class Book extends LibraryItem {
 
     @Override
     public String toString() {
-        return "Book{" +
+        // super.toString() gets the ID, Title, Location from the parent
+        return super.toString() + " Book{" +
                 "author='" + author + '\'' +
                 '}';
     }
