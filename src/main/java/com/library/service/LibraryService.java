@@ -3,6 +3,7 @@ package com.library.service;
 import com.library.model.LibraryItem;
 import com.library.model.User;
 import com.library.repository.ItemRepository;
+import com.library.exception.LibraryException;
 
 import java.util.List;
 
@@ -17,34 +18,25 @@ public class LibraryService {
     }
 
     // 1. Borrowing Logic
-    public void borrowItem(String itemId, User user) {
-        // Step A: Find the item
+    public void borrowItem(String itemId, User user) throws LibraryException {
         LibraryItem item = itemRepository.findById(itemId);
 
-        // Step B: Validation Checks
         if (item == null) {
-            System.out.println("Error: Item not found with ID: " + itemId);
-            return;
+            throw new LibraryException("Item not found with ID: " + itemId);
         }
 
         if (item.isBorrowed()) {
-            System.out.println("Error: Item is already borrowed by someone else.");
-            return;
+            throw new LibraryException("Item is already borrowed.");
         }
 
         if (!user.canBorrow()) {
-            System.out.println("Error: User has reached their borrowing limit (Max 3).");
-            return;
+            throw new LibraryException("User has reached borrowing limit.");
         }
 
-        // Step C: If we pass all checks, perform the action
-        item.setBorrowed(true); // Mark item as taken
-        user.addItem(item);     // Add to user's personal list
-
-        // Step D: SAVE the changes back to the repository
+        item.setBorrowed(true);
+        user.addItem(item);
         itemRepository.save(item);
 
-        System.out.println("Success: " + user.getName() + " borrowed '" + item.getTitle() + "'");
     }
 
     // 2. Returning Logic

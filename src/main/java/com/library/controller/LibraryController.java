@@ -62,7 +62,12 @@ public class LibraryController {
 
     private void borrowWorkflow() {
         String itemId = ui.askForInput("Enter Item ID to borrow");
-        libraryService.borrowItem(itemId, currentUser);
+        try {
+            libraryService.borrowItem(itemId, currentUser);
+            ui.showMessage("Success: You have borrowed the item.");
+        } catch (Exception e) { // Catch the error we threw
+            ui.showMessage("Error: " + e.getMessage());
+        }
     }
 
     private void returnWorkflow() {
