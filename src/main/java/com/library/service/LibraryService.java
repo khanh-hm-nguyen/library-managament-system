@@ -65,4 +65,8 @@ public class LibraryService {
     }
 
     public List<LibraryItem> getAllItems() { return itemRepository.findAll(); }
+
+    public List<LibraryItem> searchByTitle(String title) {
+        return itemRepository.findByTitle(title);
+    }
 }

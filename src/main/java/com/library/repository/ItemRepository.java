@@ -9,4 +9,6 @@ public interface ItemRepository {
     LibraryItem findById(String id);
     List<LibraryItem> findAll();
     void delete(String id);
+
+    List<LibraryItem> findByTitle(String title);
 }

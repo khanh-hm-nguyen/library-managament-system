@@ -26,24 +26,18 @@ public class LibraryController {
 
         while (running) {
             ui.showMainMenu();
-            String choice = ui.askForInput(""); // Empty prompt because menu already shows it
+            String choice = ui.askForInput("");
 
             switch (choice) {
-                case "1":
-                    listAllItems();
-                    break;
-                case "2":
-                    borrowWorkflow();
-                    break;
-                case "3":
-                    returnWorkflow();
-                    break;
-                case "4":
+                case "1": listAllItems(); break;
+                case "2": searchWorkflow(); break;
+                case "3": borrowWorkflow(); break;
+                case "4": returnWorkflow(); break;
+                case "5":
                     running = false;
                     ui.showMessage("Goodbye!");
                     break;
-                default:
-                    ui.showMessage("Invalid option. Please try again.");
+                default: ui.showMessage("Invalid option.");
             }
         }
         ui.close();
@@ -74,5 +68,23 @@ public class LibraryController {
     private void returnWorkflow() {
         String itemId = ui.askForInput("Enter Item ID to return");
         libraryService.returnItem(itemId, currentUser);
+    }
+
+    private void searchWorkflow() {
+        // 1. Ask user for a keyword
+        String titleQuery = ui.askForInput("Enter part of the title");
+
+        // 2. Call the service
+        List<LibraryItem> results = libraryService.searchByTitle(titleQuery);
+
+        // 3. Display results
+        if (results.isEmpty()) {
+            ui.showMessage("No items found matching: " + titleQuery);
+        } else {
+            ui.showMessage("--- Search Results ---");
+            for (LibraryItem item : results) {
+                ui.showMessage(item.toString());
+            }
+        }
     }
 }
